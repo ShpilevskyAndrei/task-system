@@ -1,0 +1,29 @@
+@import "font-sizes";
+
+@font-face {
+  font-family: "Inter Regular";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Inter Regular"), url("assets/fonts/inter/Inter-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Inter Medium";
+  font-style: normal;
+  font-weight: 500;
+  src: local("Inter Medium"), url("assets/fonts/inter/Inter-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Inter Semibold";
+  font-style: normal;
+  font-weight: 600;
+  src: local("Inter Semibold"), url("assets/fonts/inter/Inter-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "Inter Bold";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Inter Bold"), url("assets/fonts/inter/Inter-Bold.ttf");
+}
