@@ -9,7 +9,7 @@ import { API, ENDPOINTS } from '../../constants/endpoints';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class UserService {
   private readonly _httpService = inject(RequestService);
 
   public getUserInfoByEmail(

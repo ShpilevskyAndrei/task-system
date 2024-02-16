@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '../constants/storage-keys';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StorageService {
-  public constructor(private _storageKey: string) {}
+  public constructor(@Inject('storageKey') private _storageKey: string) {}
 
   public setItem(value: string): void {
     localStorage.setItem(this._storageKey, value);

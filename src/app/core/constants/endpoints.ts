@@ -8,17 +8,17 @@ export enum GatewaysEnum {
 
 export const ENDPOINTS: Record<GatewaysEnum, { [key: string]: string }> = {
   auth: {
-    login: 'users',
-    logout: 'users',
+    login: 'users.json',
+    logout: 'users.json',
   },
   users: {
-    getUserList: 'users',
-    getUserInfo: 'users',
+    getUserList: 'users.json',
+    getUserInfo: 'users.json',
   },
   tasks: {
-    getTask: 'tasks',
-    getTaskList: 'tasks',
-    createTask: 'tasks',
-    deleteTask: 'tasks',
+    getTask: 'tasks.json',
+    getTaskList: 'tasks.json',
+    createTask: 'tasks.json',
+    deleteTask: 'tasks.json',
   },
 } as const;

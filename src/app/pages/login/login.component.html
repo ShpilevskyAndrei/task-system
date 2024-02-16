@@ -1,1 +1,52 @@
-<p>login works!</p>
+<main class="login-page">
+  <div class="login-page__content">
+    <div class="login-page__content__img-container">
+      <img
+        class="login-page__content__img-container_img"
+        src="assets/images/rectangle.png"
+        alt="rectangle"
+      />
+    </div>
+    <div class="login-page__content__form-container">
+      <h1 class="login-page__content__form-container_title">Авторизация</h1>
+      <form
+        class="login-page__content__form-container__form"
+        [formGroup]="loginForm"
+      >
+        <mat-form-field class="login-page__content__form-container__form_input">
+          <mat-label>Эл. почта</mat-label>
+          <input
+            type="email"
+            matInput
+            formControlName="email"
+            placeholder="shpilevskiy.aa@gmail.com"
+          />
+        </mat-form-field>
+        <mat-form-field class="login-page__content__form-container__form_input">
+          <mat-label>Пароль</mat-label>
+          <input
+            [type]="isPassVisible ? 'text' : 'password'"
+            matInput
+            formControlName="password"
+            placeholder="qwerty"
+          />
+          <img
+            matSuffix
+            src="assets/icons/core/{{ isPassVisible ? 'eye' : 'eye-off' }}.svg"
+            alt="eye"
+            (click)="changePassVisibility()"
+          />
+        </mat-form-field>
+        <button
+          class="login-page__content__form-container__form_button"
+          mat-flat-button
+          color="primary"
+          [disabled]="loginForm.invalid || isBtnDisabled"
+          (click)="login()"
+        >
+          Войти в систему
+        </button>
+      </form>
+    </div>
+  </div>
+</main>

@@ -11,6 +11,8 @@ import {
   AccessTokenStorageService,
   RefreshTokenStorageService,
 } from '../storage.service';
+import { AuthServiceHelper } from '../../../../assets/mock/helpers/auth.helper';
+import { IResponse } from '../../interfaces/response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -24,49 +26,55 @@ export class AuthService {
     RefreshTokenStorageService
   );
 
-  private _isAuthorized: BehaviorSubject<boolean | null> = new BehaviorSubject<
-    boolean | null
-  >(null);
+  private _isAuthorized: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
 
   public constructor() {
     this.defineExistingTokens();
   }
 
-  public login(loginRequestBody: IUserCredentials): Observable<ITokens | null> {
+  public login(
+    loginRequestBody: IUserCredentials
+  ): Observable<IResponse<ITokens>> {
     return this._httpService.get<IUser[]>(API, ENDPOINTS.auth['login']).pipe(
-      map((users: IUser[]): ITokens | null => {
-        if (!users || !users.length) return null; //TODO. Handle error (such user doesn't exist)
-
-        const user: IUser | undefined = users.find(
-          (user: IUser): boolean => user.email === loginRequestBody.email
+      map((users: IUser[]): IResponse<ITokens> => {
+        const response: IResponse<ITokens> = AuthServiceHelper.loginControl(
+          loginRequestBody,
+          users
         );
 
-        if (!user) return null; //TODO. Handle error (suh user doesn't exist)
-        if (user.password !== loginRequestBody.password) return null; //TODO. Handle error (password incorrect)
+        if (response.status === 'success' && response.data) {
+          this._accessTokenStorageService.setItem(response.data.accessToken);
+          this._refreshTokenStorageService.setItem(response.data.refreshToken);
+          this.setIsAuthorized(true);
+        }
 
-        const tokens: ITokens = {
-          accessToken: 'generated-access-token',
-          refreshToken: 'generated-refresh-token',
-        };
-
-        this._accessTokenStorageService.setItem(tokens.accessToken);
-        this._refreshTokenStorageService.setItem(tokens.refreshToken);
-
-        return tokens;
+        return response;
       })
     );
   }
 
-  public logout(): Observable<boolean> {
-    //Send request to BE, after that (if success):
-    //TODO. + remove user info from store
-    this._accessTokenStorageService.removeItem();
-    this._refreshTokenStorageService.removeItem();
-    this.setIsAuthorized(false);
-    return of(true);
+  public logout(): Observable<IResponse<boolean>> {
+    // Send request to BE, after that (if success):
+    // TODO. + remove user info from store
+    const response: IResponse<boolean> = AuthServiceHelper.logoutControl();
+
+    if (response.status === 'error' && !response.data) {
+      return of(response);
+    }
+
+    return of(response).pipe(
+      map((response: IResponse<boolean>): IResponse<boolean> => {
+        this._accessTokenStorageService.removeItem();
+        this._refreshTokenStorageService.removeItem();
+        this.setIsAuthorized(false);
+
+        return response;
+      })
+    );
   }
 
-  public getIsAuthorized(): Observable<boolean | null> {
+  public getIsAuthorized(): Observable<boolean> {
     return this._isAuthorized.asObservable();
   }
 
