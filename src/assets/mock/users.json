@@ -1,0 +1,247 @@
+[
+  {
+    "id": "1",
+    "email": "JohnDoe@tasksystem.com",
+    "password": "randomPassword1",
+    "avatar": "assets/mock/user-avatars/1.png",
+    "displayName": "Джон Доу"
+  },
+  {
+    "id": "2",
+    "email": "JaneSmith@tasksystem.com",
+    "password": "randomPassword2",
+    "avatar": "assets/mock/user-avatars/2.png",
+    "displayName": "Джейн Смит"
+  },
+  {
+    "id": "3",
+    "email": "MichaelJohnson@tasksystem.com",
+    "password": "randomPassword3",
+    "avatar": "assets/mock/user-avatars/3.png",
+    "displayName": "Майкл Джонсон"
+  },
+  {
+    "id": "4",
+    "email": "EmilyBrown@tasksystem.com",
+    "password": "randomPassword4",
+    "avatar": "assets/mock/user-avatars/4.png",
+    "displayName": "Эмили Браун"
+  },
+  {
+    "id": "5",
+    "email": "WilliamTaylor@tasksystem.com",
+    "password": "randomPassword5",
+    "avatar": "assets/mock/user-avatars/5.png",
+    "displayName": "Уильям Тейлор"
+  },
+  {
+    "id": "6",
+    "email": "OliviaMartinez@tasksystem.com",
+    "password": "randomPassword6",
+    "avatar": "assets/mock/user-avatars/6.png",
+    "displayName": "Оливия Мартинес"
+  },
+  {
+    "id": "7",
+    "email": "JamesAnderson@tasksystem.com",
+    "password": "randomPassword7",
+    "avatar": "assets/mock/user-avatars/7.png",
+    "displayName": "Джеймс Андерсон"
+  },
+  {
+    "id": "8",
+    "email": "SophiaWilson@tasksystem.com",
+    "password": "randomPassword8",
+    "avatar": "assets/mock/user-avatars/8.png",
+    "displayName": "София Уилсон"
+  },
+  {
+    "id": "9",
+    "email": "BenjaminJackson@tasksystem.com",
+    "password": "randomPassword9",
+    "avatar": "assets/mock/user-avatars/9.png",
+    "displayName": "Бенджамин Джексон"
+  },
+  {
+    "id": "10",
+    "email": "MiaWhite@tasksystem.com",
+    "password": "randomPassword10",
+    "avatar": "assets/mock/user-avatars/10.png",
+    "displayName": "Миа Уайт"
+  },
+  {
+    "id": "11",
+    "email": "AlexanderHarris@tasksystem.com",
+    "password": "randomPassword11",
+    "avatar": "assets/mock/user-avatars/11.png",
+    "displayName": "Александр Харрис"
+  },
+  {
+    "id": "12",
+    "email": "CharlotteMartin@tasksystem.com",
+    "password": "randomPassword12",
+    "avatar": "assets/mock/user-avatars/12.png",
+    "displayName": "Шарлотта Мартин"
+  },
+  {
+    "id": "13",
+    "email": "DanielThompson@tasksystem.com",
+    "password": "randomPassword13",
+    "avatar": "assets/mock/user-avatars/13.png",
+    "displayName": "Дэниел Томпсон"
+  },
+  {
+    "id": "14",
+    "email": "AmeliaGarcia@tasksystem.com",
+    "password": "randomPassword14",
+    "avatar": "assets/mock/user-avatars/14.png",
+    "displayName": "Амелия Гарсия"
+  },
+  {
+    "id": "15",
+    "email": "DavidMartinez@tasksystem.com",
+    "password": "randomPassword15",
+    "avatar": "assets/mock/user-avatars/15.png",
+    "displayName": "Дэвид Мартинес"
+  },
+  {
+    "id": "16",
+    "email": "EmmaAnderson@tasksystem.com",
+    "password": "randomPassword16",
+    "avatar": "assets/mock/user-avatars/16.png",
+    "displayName": "Эмма Андерсон"
+  },
+  {
+    "id": "17",
+    "email": "JosephLopez@tasksystem.com",
+    "password": "randomPassword17",
+    "avatar": "assets/mock/user-avatars/17.png",
+    "displayName": "Джозеф Лопес"
+  },
+  {
+    "id": "18",
+    "email": "GraceHernandez@tasksystem.com",
+    "password": "randomPassword18",
+    "avatar": "assets/mock/user-avatars/18.png",
+    "displayName": "Грейс Хернандез"
+  },
+  {
+    "id": "19",
+    "email": "CarterYoung@tasksystem.com",
+    "password": "randomPassword19",
+    "avatar": "assets/mock/user-avatars/19.png",
+    "displayName": "Картер Янг"
+  },
+  {
+    "id": "20",
+    "email": "EvelynKing@tasksystem.com",
+    "password": "randomPassword20",
+    "avatar": "assets/mock/user-avatars/20.png",
+    "displayName": "Эвелин Кинг"
+  },
+  {
+    "id": "21",
+    "email": "SamuelLee@tasksystem.com",
+    "password": "randomPassword21",
+    "avatar": "assets/mock/user-avatars/21.png",
+    "displayName": "Сэмюэл Ли"
+  },
+  {
+    "id": "22",
+    "email": "AveryGonzalez@tasksystem.com",
+    "password": "randomPassword22",
+    "avatar": "assets/mock/user-avatars/22.png",
+    "displayName": "Эйвери Гонзалес"
+  },
+  {
+    "id": "23",
+    "email": "AriaPerez@tasksystem.com",
+    "password": "randomPassword23",
+    "avatar": "assets/mock/user-avatars/23.png",
+    "displayName": "Ария Перес"
+  },
+  {
+    "id": "24",
+    "email": "JacksonCruz@tasksystem.com",
+    "password": "randomPassword24",
+    "avatar": "assets/mock/user-avatars/24.png",
+    "displayName": "Джексон Круз"
+  },
+  {
+    "id": "25",
+    "email": "ScarlettRussell@tasksystem.com",
+    "password": "randomPassword25",
+    "avatar": "assets/mock/user-avatars/25.png",
+    "displayName": "Скарлетт Рассел"
+  },
+  {
+    "id": "26",
+    "email": "AnthonyEdwards@tasksystem.com",
+    "password": "randomPassword26",
+    "avatar": "assets/mock/user-avatars/26.png",
+    "displayName": "Энтони Эдвардс"
+  },
+  {
+    "id": "27",
+    "email": "IsabellaHoward@tasksystem.com",
+    "password": "randomPassword27",
+    "avatar": "assets/mock/user-avatars/27.png",
+    "displayName": "Изабелла Ховард"
+  },
+  {
+    "id": "28",
+    "email": "MateoMorales@tasksystem.com",
+    "password": "randomPassword28",
+    "avatar": "assets/mock/user-avatars/28.png",
+    "displayName": "Матео Моралес"
+  },
+  {
+    "id": "29",
+    "email": "GraceGutierrez@tasksystem.com",
+    "password": "randomPassword29",
+    "avatar": "assets/mock/user-avatars/29.png",
+    "displayName": "Грейс Гутьеррес"
+  },
+  {
+    "id": "30",
+    "email": "LeoGomez@tasksystem.com",
+    "password": "randomPassword30",
+    "avatar": "assets/mock/user-avatars/30.png",
+    "displayName": "Лео Гомес"
+  },
+  {
+    "id": "31",
+    "email": "VioletBryant@tasksystem.com",
+    "password": "randomPassword31",
+    "avatar": "assets/mock/user-avatars/31.png",
+    "displayName": "Вайолет Брайант"
+  },
+  {
+    "id": "32",
+    "email": "SamuelLopez@tasksystem.com",
+    "password": "randomPassword32",
+    "avatar": "assets/mock/user-avatars/32.png",
+    "displayName": "Сэмюэл Лопес"
+  },
+  {
+    "id": "33",
+    "email": "ZoeyRivera@tasksystem.com",
+    "password": "randomPassword33",
+    "avatar": "assets/mock/user-avatars/33.png",
+    "displayName": "Зои Ривера"
+  },
+  {
+    "id": "34",
+    "email": "HenryCarter@tasksystem.com",
+    "password": "randomPassword34",
+    "avatar": "assets/mock/user-avatars/34.png",
+    "displayName": "Генри Картер"
+  },
+  {
+    "id": "35",
+    "email": "LilyBarnes@tasksystem.com",
+    "password": "randomPassword35",
+    "avatar": "assets/mock/user-avatars/35.png",
+    "displayName": "Лили Барнс"
+  }
+]
