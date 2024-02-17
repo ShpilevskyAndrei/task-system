@@ -19,6 +19,62 @@ export const routes: Routes = [
         (m) => m.DashboardComponent
       ),
     canMatch: [AuthGuard],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'tasks',
+      },
+      {
+        path: 'tasks',
+        loadComponent: () =>
+          import('./pages/dashboard/pages/tasks/tasks.component').then(
+            (m) => m.TasksComponent
+          ),
+      },
+      {
+        path: 'home',
+        loadComponent: () =>
+          import('../app/shared/pages/soon/soon.component').then(
+            (m) => m.SoonComponent
+          ),
+      },
+      {
+        path: 'calendar',
+        loadComponent: () =>
+          import('../app/shared/pages/soon/soon.component').then(
+            (m) => m.SoonComponent
+          ),
+      },
+      {
+        path: 'team',
+        loadComponent: () =>
+          import('../app/shared/pages/soon/soon.component').then(
+            (m) => m.SoonComponent
+          ),
+      },
+      {
+        path: 'activity',
+        loadComponent: () =>
+          import('../app/shared/pages/soon/soon.component').then(
+            (m) => m.SoonComponent
+          ),
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('../app/shared/pages/soon/soon.component').then(
+            (m) => m.SoonComponent
+          ),
+      },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('../app/shared/pages/soon/soon.component').then(
+            (m) => m.SoonComponent
+          ),
+      },
+    ],
   },
   {
     path: '**',

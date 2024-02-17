@@ -1,0 +1,48 @@
+:host {
+  .nav {
+    width: 100%;
+    &__link {
+      display: flex;
+      align-items: center;
+      padding: 20px 30px 20px calc(30px - 4px);
+      width: 100%;
+      border-left: 4px solid transparent;
+      box-sizing: border-box;
+      transition: border-left 0.15s ease-in-out;
+      &-active {
+        border-color: #4971ff !important;
+        background: linear-gradient(
+          100deg,
+          rgba(73, 113, 255, 0.1) 0%,
+          rgba(73, 113, 255, 0) 100%
+        );
+        color: #4971ff;
+        img {
+          filter: invert(52%) sepia(82%) saturate(5265%) hue-rotate(217deg)
+            brightness(103%) contrast(102%);
+        }
+      }
+      &:hover {
+        border-color: rgba(73, 113, 255, 0.1);
+        background: linear-gradient(
+          100deg,
+          rgba(73, 113, 255, 0.1) 0%,
+          rgba(73, 113, 255, 0) 100%
+        );
+        color: #4971ff;
+        img {
+          filter: invert(52%) sepia(82%) saturate(5265%) hue-rotate(217deg)
+            brightness(103%) contrast(102%);
+        }
+      }
+      &_icon {
+        margin-right: 16px;
+      }
+      &_title {
+        font-size: 17px;
+        font-weight: 400;
+        line-height: 22px;
+      }
+    }
+  }
+}

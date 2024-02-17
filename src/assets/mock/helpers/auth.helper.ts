@@ -1,10 +1,13 @@
+import { Injectable } from '@angular/core';
+
 import { ITokens } from '../../../app/core/interfaces/tokens.interface';
 import { IUser } from '../../../app/core/interfaces/user.interface';
 import { IUserCredentials } from '../../../app/core/interfaces/user-credentials.interface';
 import { IResponse } from '../../../app/core/interfaces/response.interface';
 
-export abstract class AuthServiceHelper {
-  public static loginControl(
+@Injectable({ providedIn: 'root' })
+export class AuthServiceHelper {
+  public loginControl(
     loginRequestBody: IUserCredentials,
     users: IUser[]
   ): IResponse<ITokens> {
@@ -35,8 +38,8 @@ export abstract class AuthServiceHelper {
 
     response.status = 'success';
     response.data = {
-      accessToken: 'generated-access-token',
-      refreshToken: 'generated-refresh-token',
+      accessToken: loginRequestBody.email,
+      refreshToken: loginRequestBody.email,
     };
 
     return response;

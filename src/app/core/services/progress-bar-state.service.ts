@@ -19,12 +19,10 @@ export class ProgressBarStateService {
   }
 
   public showSpinner(): void {
-    console.log('show')
     this.setSpinnerState(this._spinnerState$.value + 1);
   }
 
   public hideSpinner(): void {
-    console.log('hide')
     this.setSpinnerState(this._spinnerState$.value - 1);
   }
 

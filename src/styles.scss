@@ -35,20 +35,25 @@ $custom-task-system-primary-palette: (
     A200: $light-primary-text,
     A400: $light-primary-text,
     A700: $light-primary-text,
-  )
+  ),
 );
 
 $task-system-primary: mat.define-palette($custom-task-system-primary-palette);
-$task-system-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$task-system-accent: mat.define-palette(
+  $custom-task-system-primary-palette,
+  A200,
+  A100,
+  A400
+);
 $task-system-warn: mat.define-palette(mat.$red-palette);
 $task-system-theme: mat.define-light-theme(
-    (
-      color: (
-        primary: $task-system-primary,
-        accent: $task-system-accent,
-        warn: $task-system-warn,
-      ),
-    )
+  (
+    color: (
+      primary: $task-system-primary,
+      accent: $task-system-accent,
+      warn: $task-system-warn,
+    ),
+  )
 );
 
 @include mat.all-component-themes($task-system-theme);
@@ -63,7 +68,7 @@ body {
 body {
   margin: 0;
   min-height: 100dvh;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Inter, "Helvetica Neue", sans-serif;
 }
 
 h1,
@@ -86,8 +91,20 @@ a {
 
 button {
   cursor: pointer;
+  //padding: 9px 30px 9px 30px!important;
+}
+
+ul,
+li,
+p {
+  margin: 0;
+  padding: 0;
 }
 
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   background-color: transparent !important;
+}
+
+.mat-mdc-paginator-container {
+  height: 64px;
 }

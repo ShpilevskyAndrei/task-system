@@ -1,0 +1,49 @@
+:host {
+  .tasks-page {
+    box-shadow: 0 10px 30px 0 #0000000f;
+    &__table {
+      padding: 20px 30px 6px;
+      ::ng-deep thead {
+        tr {
+          height: 42px;
+          font-size: 17px;
+          font-weight: 400;
+          line-height: 22px;
+          text-align: left;
+        }
+      }
+      ::ng-deep tbody {
+        tr {
+          height: 74px;
+          border-left: 4px solid transparent;
+          box-sizing: border-box;
+          cursor: pointer;
+          &:hover {
+            background-color: rgba(73, 113, 255, 0.025);
+          }
+        }
+      }
+    }
+
+    .priority {
+      border-radius: 50px;
+      min-width: 110px !important;
+      display: inline-block;
+      padding: 4px 20px 6px 20px;
+      box-sizing: border-box;
+      text-align: center;
+      &-low {
+        background-color: #f0f1ff;
+        color: #4971ff;
+      }
+      &-medium {
+        background-color: #faf7e3;
+        color: #eaa238;
+      }
+      &-high {
+        background-color: #ffeeeb;
+        color: #f2565c;
+      }
+    }
+  }
+}

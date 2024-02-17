@@ -1,0 +1,45 @@
+<header class="header">
+  <div class="header__left">
+    <span class="header__left_title">{{ activeTitle }}</span>
+    <div
+      *ngIf="activeTitle === 'Управление задачами'"
+      class="header__left__sort-block"
+    >
+      <span class="header__left__sort-block_by">Сортировать по:</span>
+      <span class="header__left__sort-block_type">Дате</span>
+      <img
+        class="header__left__sort-block_arrow"
+        src="assets/icons/core/arrow.svg"
+        alt=""
+      />
+    </div>
+  </div>
+  <div class="header__right">
+    <div
+      class="header__right__user"
+      *ngIf="userInfo$ | async as userInfo; else undefinedUser"
+    >
+      <img class="header__right__user_avatar" [src]="userInfo.avatar" alt="" />
+      <span class="header__right__user_name">{{ userInfo.displayName }}</span>
+    </div>
+    <ng-template #undefinedUser>
+      <div class="header__right__user">
+        <img
+          class="header__right__user_spinner"
+          src="assets/icons/core/spinner.svg"
+          alt=""
+        />
+      </div>
+    </ng-template>
+
+    <button
+      *ngIf="activeTitle === 'Управление задачами'"
+      mat-flat-button
+      color="primary"
+      class="header__right_btn"
+      (click)="createTask()"
+    >
+      Добавить задачу
+    </button>
+  </div>
+</header>

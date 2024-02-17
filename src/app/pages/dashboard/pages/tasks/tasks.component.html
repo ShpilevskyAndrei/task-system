@@ -1,0 +1,59 @@
+<section class="tasks-page">
+  <table class="tasks-page__table" mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>ДАТА СОЗДАНИЯ</th>
+      <td mat-cell *matCellDef="let row">{{ row.date | dateFormat }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="priority">
+      <th mat-header-cell *matHeaderCellDef>ИСПОЛНИТЕЛЬ</th>
+      <td mat-cell *matCellDef="let row">
+        <ng-container *ngIf="getUserInfoById(row.userId) | async as user">
+          <div style="display: flex; align-items: center">
+            <img
+              style="height: 34px; margin-right: 10px; border-radius: 50%"
+              src="{{ user?.avatar }}"
+              alt=""
+            />
+            <span>{{ user?.displayName }}</span>
+          </div>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="assigner">
+      <th mat-header-cell *matHeaderCellDef>ПРИОРИТЕТ ЗАДАЧИ</th>
+      <td mat-cell *matCellDef="let row">
+        <span class="priority" [class]="definePriorityClass(row.priority)">{{
+          row.priority
+        }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>НАЗВАНИЕ ЗАДАЧИ</th>
+      <td mat-cell *matCellDef="let row">{{ row.title }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let row">
+        <img
+          style="cursor: pointer"
+          src="assets/icons/core/close.svg"
+          alt="X"
+          (click)="deleteTask($event, row.id)"
+        />
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="openTaskInfo(row)"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="5">No data matching the filter</td>
+    </tr>
+  </table>
+
+  <mat-paginator pageSize="8" aria-label="Select page of users"></mat-paginator>
+</section>

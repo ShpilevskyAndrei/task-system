@@ -13,6 +13,7 @@ import {
 } from '../storage.service';
 import { AuthServiceHelper } from '../../../../assets/mock/helpers/auth.helper';
 import { IResponse } from '../../interfaces/response.interface';
+import { UserStateService } from '../../../state/user-state.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,8 @@ export class AuthService {
   private readonly _refreshTokenStorageService = inject(
     RefreshTokenStorageService
   );
+  private _userStateService = inject(UserStateService);
+  private _authServiceHelper = inject(AuthServiceHelper);
 
   private _isAuthorized: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
@@ -38,10 +41,8 @@ export class AuthService {
   ): Observable<IResponse<ITokens>> {
     return this._httpService.get<IUser[]>(API, ENDPOINTS.auth['login']).pipe(
       map((users: IUser[]): IResponse<ITokens> => {
-        const response: IResponse<ITokens> = AuthServiceHelper.loginControl(
-          loginRequestBody,
-          users
-        );
+        const response: IResponse<ITokens> =
+          this._authServiceHelper.loginControl(loginRequestBody, users);
 
         if (response.status === 'success' && response.data) {
           this._accessTokenStorageService.setItem(response.data.accessToken);
@@ -56,7 +57,7 @@ export class AuthService {
 
   public logout(): Observable<IResponse<boolean>> {
     // Send request to BE, after that (if success):
-    // TODO. + remove user info from store
+    this._userStateService.setUserInfo(null);
     const response: IResponse<boolean> = AuthServiceHelper.logoutControl();
 
     if (response.status === 'error' && !response.data) {

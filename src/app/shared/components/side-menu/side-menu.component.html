@@ -1,0 +1,29 @@
+<section class="side-menu">
+  <div>
+    <img class="side-menu_logo" src="assets/icons/logos/logo-full.svg" alt="" />
+    <nav class="side-menu__navs">
+      <ng-container *ngFor="let mainNav of sideMenuNavs">
+        <app-nav-item
+          *ngIf="mainNav.type === 'main'"
+          [nav]="mainNav"
+          [isActive]="mainNav.path === activePath"
+        ></app-nav-item>
+      </ng-container>
+      <div class="side-menu__navs_divider"></div>
+      <ng-container *ngFor="let additionalNav of sideMenuNavs">
+        <app-nav-item
+          *ngIf="additionalNav.type === 'additional'"
+          [nav]="additionalNav"
+          [isActive]="additionalNav.path === activePath"
+        ></app-nav-item>
+      </ng-container>
+    </nav>
+  </div>
+  <app-nav-item
+    [nav]="{
+      title: 'Выход из системы',
+      icon: 'assets/icons/navs/logout.svg'
+    }"
+    (click)="logout()"
+  ></app-nav-item>
+</section>

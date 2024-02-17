@@ -1,0 +1,22 @@
+:host {
+  .dashboard {
+    width: 100vw;
+    height: 100vh;
+    &_side-menu {
+      width: 300px;
+      box-shadow: 0 10px 30px 0 #0000000f;
+      background-color: #ffffff;
+      border-right: none;
+    }
+    &__content {
+      min-height: 100%;
+      width: calc(100vw - 300px);
+      &_container {
+        padding: 20px 30px 30px;
+        box-sizing: border-box;
+        width: 100%;
+        min-height: calc(100% - 142px);
+      }
+    }
+  }
+}

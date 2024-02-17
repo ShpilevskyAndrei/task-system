@@ -16,11 +16,12 @@ import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { first } from 'rxjs';
+
 import { AuthService } from '../../core/services/requests/auth.service';
 import { ITokens } from '../../core/interfaces/tokens.interface';
 import { UnsubscribeDirective } from '../../core/directives/unsubscribe.directive';
 import { IResponse } from '../../core/interfaces/response.interface';
-import { first } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -97,7 +98,7 @@ export class LoginComponent extends UnsubscribeDirective implements OnInit {
         },
         complete: (): void => {
           this.isBtnDisabled = false;
-        }
+        },
       });
   }
 }

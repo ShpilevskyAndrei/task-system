@@ -1,0 +1,12 @@
+<ul class="nav">
+  <a
+    class="nav__link"
+    routerLink="{{ nav.path }}"
+    [ngClass]="{
+      'nav__link-active': isActive
+    }"
+  >
+    <img class="nav__link_icon" src="{{ nav.icon }}" alt="" />
+    <span class="nav__link_title">{{ nav.title }}</span>
+  </a>
+</ul>

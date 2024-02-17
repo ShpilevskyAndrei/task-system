@@ -1,1 +1,11 @@
-<p>dashboard works!</p>
+<mat-drawer-container class="dashboard">
+  <mat-drawer class="dashboard_side-menu" mode="side" opened>
+    <app-side-menu [activePath]="activeNav?.path" />
+  </mat-drawer>
+  <mat-drawer-content class="dashboard__content">
+    <app-header [activeTitle]="activeNav?.title" />
+    <main class="dashboard__content_container">
+      <router-outlet />
+    </main>
+  </mat-drawer-content>
+</mat-drawer-container>
