@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { AsyncPipe, NgIf } from '@angular/common';
 
-import { asapScheduler, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { ProgressBarStateService } from './core/services/progress-bar-state.service';
 
