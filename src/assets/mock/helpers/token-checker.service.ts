@@ -1,8 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 
-import { ITokens } from '../../../app/core/interfaces/tokens.interface';
-import { IUser } from '../../../app/core/interfaces/user.interface';
-import { IUserCredentials } from '../../../app/core/interfaces/user-credentials.interface';
 import { IResponse } from '../../../app/core/interfaces/response.interface';
 import { AccessTokenStorageService } from '../../../app/core/services/storage.service';
 

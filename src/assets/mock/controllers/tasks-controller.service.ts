@@ -1,11 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 
-import {
-  IUser,
-  IUserWithoutPass,
-} from '../../../app/core/interfaces/user.interface';
 import { IResponse } from '../../../app/core/interfaces/response.interface';
-import { AccessTokenStorageService } from '../../../app/core/services/storage.service';
 import { ITask } from '../../../app/features/dashboard/pages/tasks/interfaces/task.interface';
 import { TokenChecker } from '../helpers/token-checker.service';
 
