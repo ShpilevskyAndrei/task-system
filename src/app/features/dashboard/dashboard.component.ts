@@ -13,22 +13,21 @@ import {
 } from '@angular/router';
 
 import { filter } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { SideMenuComponent } from '../../shared/components/side-menu/side-menu.component';
 import { HeaderComponent } from '../../shared/components/header/header.component';
-import { UserStateService } from '../../state/user-state.service';
 import { UnsubscribeDirective } from '../../core/directives/unsubscribe.directive';
-import { UserService } from '../../core/services/requests/user.service';
-import { IUserWithoutPass } from '../../core/interfaces/user.interface';
 import { IResponse } from '../../core/interfaces/response.interface';
 import {
   INav,
   sideMenuNavs,
 } from '../../shared/components/side-menu/side-menu-navs';
-import { UsersStateService } from '../../state/users-state.service';
 import { TasksService } from '../../core/services/requests/tasks.service';
-import { TasksStateService } from '../../state/tasks-state.service';
+import { TasksStateService } from '../../state/mock/tasks-state.service';
 import { ITask } from './pages/tasks/interfaces/task.interface';
+import * as UserActions from '../../state/user/actions';
+import * as UsersActions from '../../state/users/actions';
 
 @Component({
   selector: 'app-pages',
@@ -45,19 +44,17 @@ import { ITask } from './pages/tasks/interfaces/task.interface';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent extends UnsubscribeDirective implements OnInit {
-  private readonly _userService = inject(UserService);
-  private readonly _userStateService = inject(UserStateService);
-  private readonly _usersStateService = inject(UsersStateService);
   private readonly _tasksService = inject(TasksService);
   private readonly _tasksStateService = inject(TasksStateService);
   private readonly _snackBar = inject(MatSnackBar);
   private readonly _router = inject(Router);
+  private readonly _store = inject(Store);
 
   public activeNav?: INav;
 
   public ngOnInit(): void {
-    this.getUserInfo();
-    this.getUsersInfo();
+    this._store.dispatch(UserActions.getUser());
+    this._store.dispatch(UsersActions.getUsers());
     this.getTasks();
     this.trackPaths();
   }
@@ -79,44 +76,6 @@ export class DashboardComponent extends UnsubscribeDirective implements OnInit {
 
         this._tasksStateService.setAndSortTasks(response.data);
       });
-  }
-
-  private getUsersInfo(): void {
-    this.subscribeTo = this._userService
-      .getUserList()
-      .subscribe((response: IResponse<IUserWithoutPass[]>): void => {
-        if (
-          !response.data ||
-          (response.status === 'error' && response.errorMessage)
-        ) {
-          this._snackBar.open(response.errorMessage!, 'ОК', {
-            duration: 3000,
-          });
-
-          return;
-        }
-
-        this._usersStateService.setUsersInfo(response.data);
-      });
-  }
-
-  private getUserInfo(): void {
-    this.subscribeTo = this._userService.getUserInfo().subscribe({
-      next: (response: IResponse<IUserWithoutPass>): void => {
-        if (
-          !response.data ||
-          (response.status === 'error' && response.errorMessage)
-        ) {
-          this._snackBar.open(response.errorMessage!, 'ОК', {
-            duration: 3000,
-          });
-
-          return;
-        }
-
-        this._userStateService.setUserInfo(response.data);
-      },
-    });
   }
 
   private trackPaths(): void {

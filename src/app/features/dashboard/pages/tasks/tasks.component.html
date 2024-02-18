@@ -8,7 +8,7 @@
     <ng-container matColumnDef="priority">
       <th mat-header-cell *matHeaderCellDef>ИСПОЛНИТЕЛЬ</th>
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="getUserInfoById(row.userId) | async as user">
+        <ng-container *ngIf="getUserInfoById(row.userId) as user">
           <div style="display: flex; align-items: center">
             <img
               style="height: 34px; margin-right: 10px; border-radius: 50%"

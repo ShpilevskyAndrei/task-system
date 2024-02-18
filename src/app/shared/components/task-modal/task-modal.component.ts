@@ -20,13 +20,14 @@ import { ITask } from '../../../features/dashboard/pages/tasks/interfaces/task.i
 import { TaskPrioritiesEnum } from '../../../features/dashboard/pages/tasks/enums/task-priorities.enum';
 import { DateFormatPipe } from '../../pipes/date-format.pipe';
 import { IUserWithoutPass } from '../../../core/interfaces/user.interface';
-import { UsersStateService } from '../../../state/users-state.service';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { EnumToArrayPipe } from '../../pipes/enum-to-array.pipe';
 import { TasksService } from '../../../core/services/requests/tasks.service';
-import { TasksStateService } from '../../../state/tasks-state.service';
+import { TasksStateService } from '../../../state/mock/tasks-state.service';
 import { IResponse } from '../../../core/interfaces/response.interface';
 import { UnsubscribeDirective } from '../../../core/directives/unsubscribe.directive';
+import { select, Store } from '@ngrx/store';
+import { usersSelector } from '../../../state/users/selectors';
 
 @Component({
   selector: 'app-task-modal',
@@ -54,11 +55,11 @@ import { UnsubscribeDirective } from '../../../core/directives/unsubscribe.direc
 })
 export class TaskModalComponent extends UnsubscribeDirective implements OnInit {
   private readonly _snackBar = inject(MatSnackBar);
-  private readonly _usersStateService = inject(UsersStateService);
   private readonly _dialogRef = inject(MatDialogRef<TaskModalComponent>);
   private readonly _dateFormatPipe = inject(DateFormatPipe);
   private readonly _tasksService = inject(TasksService);
   private readonly _tasksStateService = inject(TasksStateService);
+  private readonly _store = inject(Store);
 
   private readonly _date: Date = new Date();
 
@@ -66,8 +67,9 @@ export class TaskModalComponent extends UnsubscribeDirective implements OnInit {
 
   public taskForm!: FormGroup;
   public isBtnDisabled = false;
-  public users$: Observable<IUserWithoutPass[] | null> =
-    this._usersStateService.getUsersInfo();
+  public users$: Observable<IUserWithoutPass[] | null> = this._store.pipe(
+    select(usersSelector)
+  );
 
   public constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -153,7 +155,7 @@ export class TaskModalComponent extends UnsubscribeDirective implements OnInit {
     if (this.data.type === 'create')
       this.patchReformattedDate(this._date.toString());
 
-    this.taskForm.controls['date'].disable()
+    this.taskForm.controls['date'].disable();
   }
 
   private patchTaskValue(): void {
@@ -162,10 +164,10 @@ export class TaskModalComponent extends UnsubscribeDirective implements OnInit {
     this.taskForm.patchValue(this.data.task);
     this.patchReformattedDate(this.data.task.date.toString());
 
-    this.taskForm.controls['title'].disable()
-    this.taskForm.controls['description'].disable()
-    this.taskForm.controls['priority'].disable()
-    this.taskForm.controls['userId'].disable()
+    this.taskForm.controls['title'].disable();
+    this.taskForm.controls['description'].disable();
+    this.taskForm.controls['priority'].disable();
+    this.taskForm.controls['userId'].disable();
   }
 
   private patchReformattedDate(date: string): void {

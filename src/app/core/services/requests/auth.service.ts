@@ -13,7 +13,6 @@ import {
 } from '../storage.service';
 import { AuthControllerService } from '../../../../assets/mock/controllers/auth-controller.service';
 import { IResponse } from '../../interfaces/response.interface';
-import { UserStateService } from '../../../state/user-state.service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +25,6 @@ export class AuthService {
   private readonly _refreshTokenStorageService = inject(
     RefreshTokenStorageService
   );
-  private readonly _userStateService = inject(UserStateService);
   private readonly _authServiceHelper = inject(AuthControllerService);
 
   private _isAuthorized: BehaviorSubject<boolean> =
@@ -68,7 +66,7 @@ export class AuthService {
 
           this._accessTokenStorageService.removeItem();
           this._refreshTokenStorageService.removeItem();
-          this._userStateService.setUserInfo(null);
+          //TODO
           this.setIsAuthorized(false);
 
           return response;

@@ -4,11 +4,12 @@ import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 
 import { map, Observable, take } from 'rxjs';
+import { select, Store } from '@ngrx/store';
 
-import { UserStateService } from '../../../state/user-state.service';
 import { IUserWithoutPass } from '../../../core/interfaces/user.interface';
 import { TaskModalComponent } from '../task-modal/task-modal.component';
-import { TasksStateService } from '../../../state/tasks-state.service';
+import { TasksStateService } from '../../../state/mock/tasks-state.service';
+import { userSelector } from '../../../state/user/selectors';
 
 @Component({
   selector: 'app-header',
@@ -21,14 +22,15 @@ export class HeaderComponent {
   @Input() public activeTitle?: string;
 
   private readonly _tasksStateService = inject(TasksStateService);
-  private readonly _userStateService = inject(UserStateService);
   private readonly _dialog = inject(MatDialog);
+  private readonly _store = inject(Store);
 
   public sortDirection$: Observable<'increase' | 'reduce'> =
     this._tasksStateService.getSortDirection();
 
-  public userInfo$: Observable<IUserWithoutPass | null> =
-    this._userStateService.getUserInfo();
+  public userInfo$: Observable<IUserWithoutPass | null> = this._store.pipe(
+    select(userSelector)
+  );
 
   public createTask(): void {
     this._dialog.open(TaskModalComponent, {
@@ -37,13 +39,15 @@ export class HeaderComponent {
   }
 
   public toggleSortDirection(): void {
-    this.sortDirection$.pipe(
-      take(1),
-      map((currentDirection): void => {
-        const newSortDirection =
-          currentDirection === 'increase' ? 'reduce' : 'increase';
-        this._tasksStateService.setSortDirection(newSortDirection);
-      })
-    ).subscribe();
+    this.sortDirection$
+      .pipe(
+        take(1),
+        map((currentDirection): void => {
+          const newSortDirection =
+            currentDirection === 'increase' ? 'reduce' : 'increase';
+          this._tasksStateService.setSortDirection(newSortDirection);
+        })
+      )
+      .subscribe();
   }
 }

@@ -21,23 +21,24 @@ import {
 } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { AsyncPipe, DatePipe, NgIf, NgStyle } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 
-import { fromEvent, map, Observable, startWith } from 'rxjs';
+import { fromEvent, map, startWith } from 'rxjs';
+import { select, Store } from '@ngrx/store';
 
 import { ITask } from './interfaces/task.interface';
 import { TasksService } from '../../../../core/services/requests/tasks.service';
-import {AsyncPipe, DatePipe, NgIf, NgStyle} from '@angular/common';
 import { DateFormatPipe } from '../../../../shared/pipes/date-format.pipe';
 import { IUserWithoutPass } from '../../../../core/interfaces/user.interface';
-import { UsersStateService } from '../../../../state/users-state.service';
-import { TasksStateService } from '../../../../state/tasks-state.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
+import { TasksStateService } from '../../../../state/mock/tasks-state.service';
 import { TaskModalComponent } from '../../../../shared/components/task-modal/task-modal.component';
 import { IResponse } from '../../../../core/interfaces/response.interface';
 import { TaskPrioritiesEnum } from './enums/task-priorities.enum';
 import { UnsubscribeDirective } from '../../../../core/directives/unsubscribe.directive';
 import { taskTableColumns } from './consts/task-table-columns';
+import { usersSelector } from '../../../../state/users/selectors';
 
 @Component({
   selector: 'app-tasks',
@@ -74,18 +75,28 @@ export class TasksComponent
   private windowHeight: number = window.innerHeight;
   private readonly _taskService = inject(TasksService);
   private readonly _taskStateService = inject(TasksStateService);
-  private readonly _usersStateService = inject(UsersStateService);
   private readonly _snackBar = inject(MatSnackBar);
   private readonly _dialog = inject(MatDialog);
+  private readonly _store = inject(Store);
 
   public columns: string[] = taskTableColumns;
   public dataSource!: MatTableDataSource<ITask>;
   public tasks: ITask[] = [];
   public pageSize: number = this.calculatePageSize();
+  public users: IUserWithoutPass[] | null = null;
 
   public ngOnInit(): void {
     this.getTasks();
+    this.getUsers();
     this.trackPageSize();
+  }
+
+  private getUsers(): void {
+    this.subscribeTo = this._store
+      .pipe(select(usersSelector))
+      .subscribe((users: IUserWithoutPass[] | null): void => {
+        this.users = users;
+      });
   }
 
   public ngAfterViewInit(): void {
@@ -106,8 +117,10 @@ export class TasksComponent
       });
   }
 
-  public getUserInfoById(id: string): Observable<IUserWithoutPass | null> {
-    return this._usersStateService.getUserById(id);
+  public getUserInfoById(id: string): IUserWithoutPass | undefined {
+    return this.users?.find(
+      (user: IUserWithoutPass): boolean => user.id === id
+    );
   }
 
   public deleteTask(event: Event, id: string): void {

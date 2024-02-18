@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { ITask } from '../features/dashboard/pages/tasks/interfaces/task.interface';
+import { ITask } from '../../features/dashboard/pages/tasks/interfaces/task.interface';
 
 @Injectable({ providedIn: 'root' })
 export class TasksStateService {
