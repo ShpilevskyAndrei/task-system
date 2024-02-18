@@ -15,13 +15,11 @@ import { ProgressBarStateService } from './core/services/progress-bar-state.serv
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  public loaderState$: Observable<boolean> = of(true);
+  public loaderState$: Observable<boolean> = of(false);
 
   private readonly progressBarStateService = inject(ProgressBarStateService);
 
   public ngOnInit(): void {
-    asapScheduler.schedule((): void => {
-      this.loaderState$ = this.progressBarStateService.getSpinnerState();
-    }, 150);
+    this.loaderState$ = this.progressBarStateService.getSpinnerState();
   }
 }
