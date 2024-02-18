@@ -8,73 +8,17 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'login',
-    loadComponent: () =>
-      import('./features/login/login.component').then((m) => m.LoginComponent),
+    path: 'auth',
+    loadChildren: () =>
+      import('./features/auth/auth.routes').then((m) => m.authRoutes),
   },
   {
     path: 'dashboard',
-    loadComponent: () =>
-      import('./features/dashboard/dashboard.component').then(
-        (m) => m.DashboardComponent
-      ),
     canMatch: [AuthGuard],
-    children: [
-      {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'tasks',
-      },
-      {
-        path: 'tasks',
-        loadComponent: () =>
-          import('./features/dashboard/pages/tasks/tasks.component').then(
-            (m) => m.TasksComponent
-          ),
-      },
-      {
-        path: 'home',
-        loadComponent: () =>
-          import('../app/shared/pages/soon/soon.component').then(
-            (m) => m.SoonComponent
-          ),
-      },
-      {
-        path: 'calendar',
-        loadComponent: () =>
-          import('../app/shared/pages/soon/soon.component').then(
-            (m) => m.SoonComponent
-          ),
-      },
-      {
-        path: 'team',
-        loadComponent: () =>
-          import('../app/shared/pages/soon/soon.component').then(
-            (m) => m.SoonComponent
-          ),
-      },
-      {
-        path: 'activity',
-        loadComponent: () =>
-          import('../app/shared/pages/soon/soon.component').then(
-            (m) => m.SoonComponent
-          ),
-      },
-      {
-        path: 'profile',
-        loadComponent: () =>
-          import('../app/shared/pages/soon/soon.component').then(
-            (m) => m.SoonComponent
-          ),
-      },
-      {
-        path: 'settings',
-        loadComponent: () =>
-          import('../app/shared/pages/soon/soon.component').then(
-            (m) => m.SoonComponent
-          ),
-      },
-    ],
+    loadChildren: () =>
+      import('./features/dashboard/dashboard.routes').then(
+        (m) => m.dashboardRoutes
+      ),
   },
   {
     path: '**',

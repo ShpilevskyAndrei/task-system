@@ -23,7 +23,7 @@ export function AuthGuard(): Observable<boolean> {
           }
         );
 
-        void _router.navigate(['/login']);
+        void _router.navigate(['/auth/login']);
 
         return false;
       }
