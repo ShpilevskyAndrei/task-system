@@ -30,7 +30,7 @@ import { select, Store } from '@ngrx/store';
 import { ITask } from './interfaces/task.interface';
 import { DateFormatPipe } from '../../../../shared/pipes/date-format.pipe';
 import { IUserWithoutPass } from '../../../../core/interfaces/user.interface';
-import { SortDirectionService } from '../../../../state/mock/sort-direction.service';
+import { SortDirectionService } from './services/sort-direction.service';
 import { TaskModalComponent } from '../../../../shared/components/task-modal/task-modal.component';
 import { TaskPrioritiesEnum } from './enums/task-priorities.enum';
 import { UnsubscribeDirective } from '../../../../core/directives/unsubscribe.directive';

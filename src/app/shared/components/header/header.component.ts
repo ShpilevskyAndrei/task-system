@@ -8,7 +8,7 @@ import { select, Store } from '@ngrx/store';
 
 import { IUserWithoutPass } from '../../../core/interfaces/user.interface';
 import { TaskModalComponent } from '../task-modal/task-modal.component';
-import { SortDirectionService } from '../../../state/mock/sort-direction.service';
+import { SortDirectionService } from '../../../features/dashboard/pages/tasks/services/sort-direction.service';
 import { userSelector } from '../../../state/user/selectors';
 
 @Component({
