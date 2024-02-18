@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 
 import { Observable } from 'rxjs';
+import { select, Store } from '@ngrx/store';
 
 import { ITask } from '../../../features/dashboard/pages/tasks/interfaces/task.interface';
 import { TaskPrioritiesEnum } from '../../../features/dashboard/pages/tasks/enums/task-priorities.enum';
@@ -22,12 +23,9 @@ import { DateFormatPipe } from '../../pipes/date-format.pipe';
 import { IUserWithoutPass } from '../../../core/interfaces/user.interface';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { EnumToArrayPipe } from '../../pipes/enum-to-array.pipe';
-import { TasksService } from '../../../core/services/requests/tasks.service';
-import { TasksStateService } from '../../../state/mock/tasks-state.service';
-import { IResponse } from '../../../core/interfaces/response.interface';
 import { UnsubscribeDirective } from '../../../core/directives/unsubscribe.directive';
-import { select, Store } from '@ngrx/store';
 import { usersSelector } from '../../../state/users/selectors';
+import * as TasksActions from '../../../state/tasks/actions';
 
 @Component({
   selector: 'app-task-modal',
@@ -57,8 +55,6 @@ export class TaskModalComponent extends UnsubscribeDirective implements OnInit {
   private readonly _snackBar = inject(MatSnackBar);
   private readonly _dialogRef = inject(MatDialogRef<TaskModalComponent>);
   private readonly _dateFormatPipe = inject(DateFormatPipe);
-  private readonly _tasksService = inject(TasksService);
-  private readonly _tasksStateService = inject(TasksStateService);
   private readonly _store = inject(Store);
 
   private readonly _date: Date = new Date();
@@ -86,28 +82,11 @@ export class TaskModalComponent extends UnsubscribeDirective implements OnInit {
   public createTask(): void {
     if (this.taskForm.invalid) return;
 
-    this.isBtnDisabled = true;
-
     const task = this.taskForm.getRawValue();
     task.date = new Date().toString();
 
-    this.subscribeTo = this._tasksService.createTask(task).subscribe({
-      next: (response: IResponse<ITask>): void => {
-        if (!response.data) {
-          this._snackBar.open('', 'OK', {
-            duration: 3000,
-          });
-
-          return;
-        }
-
-        this._tasksStateService.addTask(response.data);
-      },
-      complete: (): void => {
-        this.isBtnDisabled = false;
-        this.closeModal();
-      },
-    });
+    this._store.dispatch(TasksActions.createTask({ task: task }));
+    this.closeModal();
   }
 
   public saveTaskAsADraft(): void {

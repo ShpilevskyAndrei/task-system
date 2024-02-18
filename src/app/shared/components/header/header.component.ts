@@ -8,7 +8,7 @@ import { select, Store } from '@ngrx/store';
 
 import { IUserWithoutPass } from '../../../core/interfaces/user.interface';
 import { TaskModalComponent } from '../task-modal/task-modal.component';
-import { TasksStateService } from '../../../state/mock/tasks-state.service';
+import { SortDirectionService } from '../../../state/mock/sort-direction.service';
 import { userSelector } from '../../../state/user/selectors';
 
 @Component({
@@ -21,7 +21,7 @@ import { userSelector } from '../../../state/user/selectors';
 export class HeaderComponent {
   @Input() public activeTitle?: string;
 
-  private readonly _tasksStateService = inject(TasksStateService);
+  private readonly _tasksStateService = inject(SortDirectionService);
   private readonly _dialog = inject(MatDialog);
   private readonly _store = inject(Store);
 
@@ -42,8 +42,8 @@ export class HeaderComponent {
     this.sortDirection$
       .pipe(
         take(1),
-        map((currentDirection): void => {
-          const newSortDirection =
+        map((currentDirection: 'increase' | 'reduce'): void => {
+          const newSortDirection: 'increase' | 'reduce' =
             currentDirection === 'increase' ? 'reduce' : 'increase';
           this._tasksStateService.setSortDirection(newSortDirection);
         })

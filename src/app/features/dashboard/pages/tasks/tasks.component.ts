@@ -22,23 +22,22 @@ import {
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { AsyncPipe, DatePipe, NgIf, NgStyle } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 
-import { fromEvent, map, startWith } from 'rxjs';
+import { fromEvent, map, Observable, startWith, take } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 
 import { ITask } from './interfaces/task.interface';
-import { TasksService } from '../../../../core/services/requests/tasks.service';
 import { DateFormatPipe } from '../../../../shared/pipes/date-format.pipe';
 import { IUserWithoutPass } from '../../../../core/interfaces/user.interface';
-import { TasksStateService } from '../../../../state/mock/tasks-state.service';
+import { SortDirectionService } from '../../../../state/mock/sort-direction.service';
 import { TaskModalComponent } from '../../../../shared/components/task-modal/task-modal.component';
-import { IResponse } from '../../../../core/interfaces/response.interface';
 import { TaskPrioritiesEnum } from './enums/task-priorities.enum';
 import { UnsubscribeDirective } from '../../../../core/directives/unsubscribe.directive';
 import { taskTableColumns } from './consts/task-table-columns';
 import { usersSelector } from '../../../../state/users/selectors';
+import { tasksSelector } from '../../../../state/tasks/selectors';
+import * as TasksActions from '../../../../state/tasks/actions';
 
 @Component({
   selector: 'app-tasks',
@@ -73,48 +72,29 @@ export class TasksComponent
   @ViewChild(MatPaginator) public paginator: MatPaginator | null = null;
 
   private windowHeight: number = window.innerHeight;
-  private readonly _taskService = inject(TasksService);
-  private readonly _taskStateService = inject(TasksStateService);
-  private readonly _snackBar = inject(MatSnackBar);
+  private readonly _sortDirectionService = inject(SortDirectionService);
   private readonly _dialog = inject(MatDialog);
   private readonly _store = inject(Store);
 
   public columns: string[] = taskTableColumns;
   public dataSource!: MatTableDataSource<ITask>;
-  public tasks: ITask[] = [];
+  public tasks$?: Observable<ITask[] | null>;
   public pageSize: number = this.calculatePageSize();
   public users: IUserWithoutPass[] | null = null;
+  public sortDirection$: Observable<'increase' | 'reduce'> =
+    this._sortDirectionService.getSortDirection();
 
   public ngOnInit(): void {
     this.getTasks();
     this.getUsers();
+    this.trackSortDirection();
     this.trackPageSize();
-  }
-
-  private getUsers(): void {
-    this.subscribeTo = this._store
-      .pipe(select(usersSelector))
-      .subscribe((users: IUserWithoutPass[] | null): void => {
-        this.users = users;
-      });
   }
 
   public ngAfterViewInit(): void {
     if (this.paginator && this.dataSource) {
       this.dataSource.paginator = this.paginator;
     }
-  }
-
-  public getTasks(): void {
-    this.subscribeTo = this._taskStateService
-      .getTasks()
-      .subscribe((tasks: ITask[] | null): void => {
-        if (!tasks) return;
-
-        this.tasks = tasks;
-        this.dataSource = new MatTableDataSource(tasks);
-        this.dataSource.paginator = this.paginator;
-      });
   }
 
   public getUserInfoById(id: string): IUserWithoutPass | undefined {
@@ -126,42 +106,7 @@ export class TasksComponent
   public deleteTask(event: Event, id: string): void {
     event.stopPropagation();
 
-    this._taskService.deleteTaskById(id).subscribe({
-      next: (isDeleted: IResponse<boolean>): void => {
-        if (!isDeleted) {
-          this._snackBar.open(
-            'Что-то пошло не так, попробуйте перезагрузить страницу',
-            'ОК',
-            {
-              duration: 3000,
-            }
-          );
-
-          return;
-        }
-
-        const updatedTaskList: ITask[] = this.tasks.filter(
-          (item: ITask): boolean => item.id !== id
-        );
-
-        if (this.tasks.length - updatedTaskList.length !== 1) {
-          this._snackBar.open(
-            'Что-то пошло не так, попробуйте перезагрузить страницу',
-            'ОК',
-            {
-              duration: 3000,
-            }
-          );
-
-          return;
-        }
-
-        this._taskStateService.setAndSortTasks(updatedTaskList);
-        this._snackBar.open(`Задача удалена успешно`, 'ОК', {
-          duration: 3000,
-        });
-      },
-    });
+    this._store.dispatch(TasksActions.deleteTask({ taskId: id }));
   }
 
   public definePriorityClass(priority: TaskPrioritiesEnum): string {
@@ -185,6 +130,62 @@ export class TasksComponent
     this._dialog.open(TaskModalComponent, {
       data: { task: task, type: 'show' },
     });
+  }
+
+  private trackSortDirection(): void {
+    this.subscribeTo = this.sortDirection$.subscribe(
+      (direction: 'increase' | 'reduce'): void => {
+        this.tasks$
+          ?.pipe(
+            take(1),
+            map((tasks: ITask[] | null): ITask[] | null => {
+              if (tasks) {
+                const sortedTasks: ITask[] = this.sortTasks(tasks, direction!);
+                this.dataSource = new MatTableDataSource(sortedTasks);
+                this.dataSource.paginator = this.paginator;
+
+                return sortedTasks;
+              }
+
+              return null;
+            })
+          )
+          .subscribe();
+      }
+    );
+  }
+
+  private sortTasks(tasks: ITask[], direction: 'increase' | 'reduce'): ITask[] {
+    return [...tasks].sort((a: ITask, b: ITask): number => {
+      const dateA: number = new Date(a.date).getTime();
+      const dateB: number = new Date(b.date).getTime();
+      return direction === 'increase' ? dateA - dateB : dateB - dateA;
+    });
+  }
+
+  private getTasks(): void {
+    this.tasks$ = this._store.pipe(select(tasksSelector)).pipe(
+      map((tasks: ITask[] | null): ITask[] | null => {
+        if (!tasks) return null;
+
+        const sortDirection: 'increase' | 'reduce' =
+          this._sortDirectionService.getSortDirectionValue();
+        const sortedTasks: ITask[] = this.sortTasks(tasks, sortDirection);
+
+        this.dataSource = new MatTableDataSource(sortedTasks);
+        this.dataSource.paginator = this.paginator;
+
+        return tasks;
+      })
+    );
+  }
+
+  private getUsers(): void {
+    this.subscribeTo = this._store
+      .pipe(select(usersSelector))
+      .subscribe((users: IUserWithoutPass[] | null): void => {
+        this.users = users;
+      });
   }
 
   private trackPageSize(): void {

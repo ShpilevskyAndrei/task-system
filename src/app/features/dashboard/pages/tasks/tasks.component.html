@@ -60,7 +60,7 @@
   </table>
 
   <mat-paginator
-    [ngStyle]="{'display': tasks.length ? 'block' : 'none'}"
+    [ngStyle]="{'display': (tasks$ | async)?.length ? 'block' : 'none'}"
     [pageSize]="pageSize"
     aria-label="Select page of users"
   ></mat-paginator>

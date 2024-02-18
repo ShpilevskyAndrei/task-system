@@ -32,10 +32,6 @@ export class TasksControllerService {
     if (this._tokenChecker.isAccessTokenExist<boolean>(response).errorMessage)
       return response;
 
-    console.log(
-      `Here needs to check is task with id ${taskId} exist in task list. The problem is new task don't exist, therefore this step skipped`
-    );
-
     response.data = true;
 
     return response;
