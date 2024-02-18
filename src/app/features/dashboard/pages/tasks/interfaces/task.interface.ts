@@ -4,7 +4,7 @@ export interface ITask {
   id?: string;
   date: Date;
   title: string;
-  description: string;
+  description?: string;
   priority: TaskPrioritiesEnum;
   userId: string;
 }

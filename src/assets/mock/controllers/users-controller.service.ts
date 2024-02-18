@@ -6,22 +6,23 @@ import {
 } from '../../../app/core/interfaces/user.interface';
 import { IResponse } from '../../../app/core/interfaces/response.interface';
 import { AccessTokenStorageService } from '../../../app/core/services/storage.service';
+import { TokenChecker } from '../helpers/token-checker.service';
 
 @Injectable({ providedIn: 'root' })
-export class UserHelper {
-  public _accessTokenStorageService = inject(AccessTokenStorageService);
+export class UsersControllerService {
+  public readonly _tokenChecker = inject(TokenChecker);
+  public readonly _accessTokenStorageService = inject(
+    AccessTokenStorageService
+  );
 
   public getUserInfoControl(users: IUser[]): IResponse<IUserWithoutPass> {
     const response: IResponse<IUserWithoutPass> = { status: 'error' };
 
-    const token: string | null = this._accessTokenStorageService.getItem();
-
-    if (!token) {
-      response.errorMessage =
-        'Срок доступа к личному кабинету истек. Пожалуйста, авторизуйтесь заново';
-
+    if (
+      this._tokenChecker.isAccessTokenExist<IUserWithoutPass>(response)
+        .errorMessage
+    )
       return response;
-    }
 
     if (!users || !users.length) {
       response.errorMessage =
@@ -31,7 +32,8 @@ export class UserHelper {
     }
 
     const user: IUser | undefined = users.find(
-      (user: IUser): boolean => user.email === token
+      (user: IUser): boolean =>
+        user.email === this._accessTokenStorageService.getItem()
     );
 
     if (!user) {
@@ -53,14 +55,11 @@ export class UserHelper {
   ): IResponse<IUserWithoutPass[]> {
     const response: IResponse<IUserWithoutPass[]> = { status: 'error' };
 
-    const token: string | null = this._accessTokenStorageService.getItem();
-
-    if (!token) {
-      response.errorMessage =
-        'Срок доступа к личному кабинету истек. Пожалуйста, авторизуйтесь заново';
-
+    if (
+      this._tokenChecker.isAccessTokenExist<IUserWithoutPass[]>(response)
+        .errorMessage
+    )
       return response;
-    }
 
     if (!users || !users.length) {
       response.errorMessage =

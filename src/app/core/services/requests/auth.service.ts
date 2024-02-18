@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 
-import { BehaviorSubject, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 import { RequestService } from './@request.service';
 import { IUser } from '../../interfaces/user.interface';
@@ -11,7 +11,7 @@ import {
   AccessTokenStorageService,
   RefreshTokenStorageService,
 } from '../storage.service';
-import { AuthServiceHelper } from '../../../../assets/mock/helpers/auth.helper';
+import { AuthControllerService } from '../../../../assets/mock/controllers/auth-controller.service';
 import { IResponse } from '../../interfaces/response.interface';
 import { UserStateService } from '../../../state/user-state.service';
 
@@ -26,8 +26,8 @@ export class AuthService {
   private readonly _refreshTokenStorageService = inject(
     RefreshTokenStorageService
   );
-  private _userStateService = inject(UserStateService);
-  private _authServiceHelper = inject(AuthServiceHelper);
+  private readonly _userStateService = inject(UserStateService);
+  private readonly _authServiceHelper = inject(AuthControllerService);
 
   private _isAuthorized: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
@@ -39,7 +39,7 @@ export class AuthService {
   public login(
     loginRequestBody: IUserCredentials
   ): Observable<IResponse<ITokens>> {
-    return this._httpService.get<IUser[]>(API, ENDPOINTS.auth['login']).pipe(
+    return this._httpService.post<IUser[]>(API, ENDPOINTS.auth['login'], []).pipe(
       map((users: IUser[]): IResponse<ITokens> => {
         const response: IResponse<ITokens> =
           this._authServiceHelper.loginControl(loginRequestBody, users);
@@ -56,23 +56,24 @@ export class AuthService {
   }
 
   public logout(): Observable<IResponse<boolean>> {
-    // Send request to BE, after that (if success):
-    this._userStateService.setUserInfo(null);
-    const response: IResponse<boolean> = AuthServiceHelper.logoutControl();
+    return this._httpService
+      .post(API, ENDPOINTS.auth['login'], {})
+      .pipe(
+        map((): IResponse<boolean> => {
+          const response: IResponse<boolean> = AuthControllerService.logoutControl();
 
-    if (response.status === 'error' && !response.data) {
-      return of(response);
-    }
+          if (response.status === 'error' && !response.data) {
+            return response;
+          }
 
-    return of(response).pipe(
-      map((response: IResponse<boolean>): IResponse<boolean> => {
-        this._accessTokenStorageService.removeItem();
-        this._refreshTokenStorageService.removeItem();
-        this.setIsAuthorized(false);
+          this._accessTokenStorageService.removeItem();
+          this._refreshTokenStorageService.removeItem();
+          this._userStateService.setUserInfo(null);
+          this.setIsAuthorized(false);
 
-        return response;
-      })
-    );
+          return response;
+        })
+      );
   }
 
   public getIsAuthorized(): Observable<boolean> {

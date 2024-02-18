@@ -28,7 +28,7 @@ import {
 import { UsersStateService } from '../../state/users-state.service';
 import { TasksService } from '../../core/services/requests/tasks.service';
 import { TasksStateService } from '../../state/tasks-state.service';
-import { ITask } from '../../core/interfaces/task.interface';
+import { ITask } from './pages/tasks/interfaces/task.interface';
 
 @Component({
   selector: 'app-pages',
@@ -45,13 +45,13 @@ import { ITask } from '../../core/interfaces/task.interface';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent extends UnsubscribeDirective implements OnInit {
-  private readonly _userStateService = inject(UserStateService);
   private readonly _userService = inject(UserService);
+  private readonly _userStateService = inject(UserStateService);
+  private readonly _usersStateService = inject(UsersStateService);
+  private readonly _tasksService = inject(TasksService);
+  private readonly _tasksStateService = inject(TasksStateService);
   private readonly _snackBar = inject(MatSnackBar);
   private readonly _router = inject(Router);
-  private readonly _usersStateService = inject(UsersStateService);
-  private readonly _tasksStateService = inject(TasksStateService);
-  private readonly _tasksService = inject(TasksService);
 
   public activeNav?: INav;
 
@@ -65,10 +65,19 @@ export class DashboardComponent extends UnsubscribeDirective implements OnInit {
   private getTasks(): void {
     this.subscribeTo = this._tasksService
       .getTaskList()
-      .subscribe((tasks: ITask[] | null): void => {
-        if (!tasks || !tasks.length) return;
+      .subscribe((response: IResponse<ITask[]>): void => {
+        if (
+          !response.data ||
+          (response.status === 'error' && response.errorMessage)
+        ) {
+          this._snackBar.open(response.errorMessage!, 'ОК', {
+            duration: 3000,
+          });
 
-        this._tasksStateService.setTasks(tasks);
+          return;
+        }
+
+        this._tasksStateService.setTasks(response.data);
       });
   }
 

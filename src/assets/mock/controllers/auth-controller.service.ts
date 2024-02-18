@@ -6,7 +6,7 @@ import { IUserCredentials } from '../../../app/core/interfaces/user-credentials.
 import { IResponse } from '../../../app/core/interfaces/response.interface';
 
 @Injectable({ providedIn: 'root' })
-export class AuthServiceHelper {
+export class AuthControllerService {
   public loginControl(
     loginRequestBody: IUserCredentials,
     users: IUser[]

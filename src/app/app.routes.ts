@@ -10,12 +10,12 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./pages/login/login.component').then((m) => m.LoginComponent),
+      import('./features/login/login.component').then((m) => m.LoginComponent),
   },
   {
     path: 'dashboard',
     loadComponent: () =>
-      import('./pages/dashboard/dashboard.component').then(
+      import('./features/dashboard/dashboard.component').then(
         (m) => m.DashboardComponent
       ),
     canMatch: [AuthGuard],
@@ -28,7 +28,7 @@ export const routes: Routes = [
       {
         path: 'tasks',
         loadComponent: () =>
-          import('./pages/dashboard/pages/tasks/tasks.component').then(
+          import('./features/dashboard/pages/tasks/tasks.component').then(
             (m) => m.TasksComponent
           ),
       },

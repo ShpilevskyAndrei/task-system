@@ -1,0 +1,15 @@
+:host {
+  .task-modal {
+    width: 765px;
+    height: 658px;
+    padding: 30px 50px;
+    box-sizing: border-box;
+    &_title {
+      margin-bottom: 20px;
+      color: #484848;
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 36px;
+    }
+  }
+}

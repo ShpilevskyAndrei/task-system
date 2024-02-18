@@ -1,0 +1,16 @@
+<section class="task-modal">
+  <p class="task-modal_title">
+    {{ data.type === "create" ? "Создание новой задачи" : "Просмотр задачи" }}
+  </p>
+  <form [formGroup]="taskForm">
+    <mat-form-field class="login-page__content__form-container__form_input">
+      <mat-label>Эл. почта</mat-label>
+      <input
+        type="email"
+        matInput
+        formControlName="email"
+        placeholder="shpilevskiy.aa@gmail.com"
+      />
+    </mat-form-field>
+  </form>
+</section>

@@ -6,14 +6,14 @@ import { RequestService } from './@request.service';
 import { IUser, IUserWithoutPass } from '../../interfaces/user.interface';
 import { API, ENDPOINTS } from '../../constants/endpoints';
 import { IResponse } from '../../interfaces/response.interface';
-import { UserHelper } from '../../../../assets/mock/helpers/user.helper';
+import { UsersControllerService } from '../../../../assets/mock/controllers/users-controller.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private readonly _httpService = inject(RequestService);
-  private readonly _userHelper = inject(UserHelper);
+  private readonly _userHelper = inject(UsersControllerService);
 
   public getUserInfo(): Observable<IResponse<IUserWithoutPass>> {
     return this._httpService

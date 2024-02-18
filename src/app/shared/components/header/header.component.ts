@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 import { UserStateService } from '../../../state/user-state.service';
 import { IUserWithoutPass } from '../../../core/interfaces/user.interface';
-import { TaskModalComponent } from '../../../pages/dashboard/pages/tasks/modals/task-modal/task-modal.component';
+import { TaskModalComponent } from '../task-modal/task-modal.component';
 
 @Component({
   selector: 'app-header',
