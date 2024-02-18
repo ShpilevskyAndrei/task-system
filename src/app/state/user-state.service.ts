@@ -7,13 +7,13 @@ import { IUserWithoutPass } from '../core/interfaces/user.interface';
 
 @Injectable({ providedIn: 'root' })
 export class UserStateService {
-  private _userInfo = new BehaviorSubject<IUserWithoutPass | null>(null);
+  private _userSub = new BehaviorSubject<IUserWithoutPass | null>(null);
 
   public getUserInfo(): Observable<IUserWithoutPass | null> {
-    return this._userInfo.asObservable();
+    return this._userSub.asObservable();
   }
 
   public setUserInfo(userInfo: IUserWithoutPass | null): void {
-    this._userInfo.next(userInfo);
+    this._userSub.next(userInfo);
   }
 }

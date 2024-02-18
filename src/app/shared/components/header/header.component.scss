@@ -36,7 +36,8 @@
           margin-right: 6px;
         }
         &_arrow {
-          cursor: pointer
+          cursor: pointer;
+          transition: all 0.15s ease-in-out;
         }
       }
     }

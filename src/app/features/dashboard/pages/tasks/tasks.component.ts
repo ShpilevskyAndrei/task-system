@@ -102,7 +102,7 @@ export class TasksComponent
       });
   }
 
-  public getUserInfoById(id: string): Observable<IUserWithoutPass | undefined> {
+  public getUserInfoById(id: string): Observable<IUserWithoutPass | null> {
     return this._usersStateService.getUserById(id);
   }
 
@@ -139,7 +139,7 @@ export class TasksComponent
           return;
         }
 
-        this._taskStateService.setTasks(updatedTaskList);
+        this._taskStateService.setAndSortTasks(updatedTaskList);
         this._snackBar.open(`Задача удалена успешно`, 'ОК', {
           duration: 3000,
         });
@@ -147,7 +147,7 @@ export class TasksComponent
     });
   }
 
-  public definePriorityClass(priority: string): string {
+  public definePriorityClass(priority: TaskPrioritiesEnum): string {
     switch (priority) {
       case TaskPrioritiesEnum.Low: {
         return 'priority-low';

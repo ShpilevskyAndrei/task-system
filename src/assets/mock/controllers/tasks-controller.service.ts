@@ -47,6 +47,7 @@ export class TasksControllerService {
     if (this._tokenChecker.isAccessTokenExist<ITask>(response).errorMessage)
       return response;
 
+    task.id = Math.floor(Math.random() * 1000000).toString();
     response.data = task;
 
     return response;

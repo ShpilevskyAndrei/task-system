@@ -1,16 +1,68 @@
 <section class="task-modal">
+  <div class="task-modal_close" (click)="closeModal()">
+    <img src="assets/icons/core/close.svg" alt="X" />
+  </div>
   <p class="task-modal_title">
     {{ data.type === "create" ? "Создание новой задачи" : "Просмотр задачи" }}
   </p>
-  <form [formGroup]="taskForm">
-    <mat-form-field class="login-page__content__form-container__form_input">
-      <mat-label>Эл. почта</mat-label>
-      <input
-        type="email"
+  <form class="task-modal__form" [formGroup]="taskForm">
+    <div class="task-modal__form__first">
+      <mat-form-field class="task-modal__form__first_date" appearance="outline">
+        <mat-label>Дата создания</mat-label>
+        <input matInput formControlName="date" />
+      </mat-form-field>
+      <mat-form-field
+        class="task-modal__form__first_title"
+        appearance="outline"
+      >
+        <mat-label>Название</mat-label>
+        <input
+          matInput
+          formControlName="title"
+        />
+      </mat-form-field>
+    </div>
+    <mat-form-field class="task-modal__form_description" appearance="outline">
+      <mat-label>Описание</mat-label>
+      <textarea
         matInput
-        formControlName="email"
-        placeholder="shpilevskiy.aa@gmail.com"
-      />
+        formControlName="description"
+      ></textarea>
     </mat-form-field>
+    <div class="task-modal__form__priority">
+      <mat-label [style]="data.type === 'show' ? 'color: lightgrey': ''" class="label">Приоритет задачи*</mat-label>
+      <mat-radio-group formControlName="priority" aria-label="Select an option">
+        <mat-radio-button
+          *ngFor="let priority of (TaskPrioritiesEnum | enumToArray).reverse()"
+          [class]="getPriorityClass(priority)"
+          [value]="priority"
+        >
+          {{ priority }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <mat-form-field class="task-modal__form_assigner" appearance="outline">
+      <mat-label>Исполнитель</mat-label>
+      <mat-select formControlName="userId">
+        @for (user of users$ | async; track user) {
+        <mat-option [value]="user.id">{{
+          user.displayName
+        }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="data.type === 'create'" class="task-modal__form__buttons">
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="taskForm.invalid || isBtnDisabled"
+        (click)="createTask()"
+      >
+        Сохранить
+      </button>
+      <button mat-flat-button color="primary" (click)="saveTaskAsADraft()">
+        Сохранить как черновик
+      </button>
+    </div>
   </form>
 </section>

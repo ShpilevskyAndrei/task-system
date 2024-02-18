@@ -1,17 +1,17 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
-import { BehaviorSubject } from "rxjs";
-import { Observable } from "rxjs/internal/Observable";
+import { BehaviorSubject, map } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ProgressBarStateService {
   private _spinnerState$: BehaviorSubject<number> = new BehaviorSubject<number>(
     0
   );
 
-  public getSpinnerState(): Observable<number> {
-    return this._spinnerState$.asObservable();
+  public getSpinnerState(): Observable<boolean> {
+    return this._spinnerState$.asObservable().pipe(map((e: number) => !!e));
   }
 
   public setSpinnerState(value: number): void {

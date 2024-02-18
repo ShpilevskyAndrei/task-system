@@ -11,6 +11,8 @@
         class="header__left__sort-block_arrow"
         src="assets/icons/core/arrow.svg"
         alt=""
+        [ngStyle]="{'transform': (sortDirection$ | async) === 'reduce' ? '' : 'rotate(180deg)'}"
+        (click)="toggleSortDirection()"
       />
     </div>
   </div>

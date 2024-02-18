@@ -77,7 +77,7 @@ export class DashboardComponent extends UnsubscribeDirective implements OnInit {
           return;
         }
 
-        this._tasksStateService.setTasks(response.data);
+        this._tasksStateService.setAndSortTasks(response.data);
       });
   }
 
