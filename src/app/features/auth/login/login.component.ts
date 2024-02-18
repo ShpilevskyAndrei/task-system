@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import {
+  MatError,
   MatFormField,
   MatLabel,
   MatSuffix,
@@ -22,6 +23,7 @@ import { AuthService } from '../../../core/services/requests/auth.service';
 import { ITokens } from '../../../core/interfaces/tokens.interface';
 import { UnsubscribeDirective } from '../../../core/directives/unsubscribe.directive';
 import { IResponse } from '../../../core/interfaces/response.interface';
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-login',
@@ -34,6 +36,8 @@ import { IResponse } from '../../../core/interfaces/response.interface';
     MatButton,
     MatIcon,
     MatSuffix,
+    MatError,
+    NgIf,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',

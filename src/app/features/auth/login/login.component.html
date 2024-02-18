@@ -21,6 +21,10 @@
             formControlName="email"
             placeholder="shpilevskiy.aa@gmail.com"
           />
+          @if (loginForm.controls['email'].hasError('required') ||
+          loginForm.controls['email'].hasError('email')) {
+          <mat-error>Введите почту в формате example&#64;gmail.com</mat-error>
+          }
         </mat-form-field>
         <mat-form-field class="login-page__content__form-container__form_input">
           <mat-label>Пароль</mat-label>
@@ -36,6 +40,9 @@
             alt="eye"
             (click)="changePassVisibility()"
           />
+          @if (loginForm.controls['password'].hasError('required')) {
+          <mat-error>Поле не может быть пустым</mat-error>
+          }
         </mat-form-field>
         <button
           class="login-page__content__form-container__form_button"
