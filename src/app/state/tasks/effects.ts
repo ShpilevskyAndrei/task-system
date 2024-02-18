@@ -7,11 +7,13 @@ import * as TasksActions from './actions';
 import { IResponse } from '../../core/interfaces/response.interface';
 import { TasksService } from '../../core/services/requests/tasks.service';
 import { ITask } from '../../features/dashboard/pages/tasks/interfaces/task.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class TasksEffects {
   private _actions$ = inject(Actions);
   private _tasksService = inject(TasksService);
+  private _snackBar = inject(MatSnackBar);
 
   getTasks$ = createEffect(() =>
     this._actions$.pipe(
@@ -35,6 +37,14 @@ export class TasksEffects {
       mergeMap((action) => {
         return this._tasksService.createTask({ ...action.task }).pipe(
           mergeMap((response: IResponse<ITask>) => {
+            this._snackBar.open(
+              `Задача '${response.data?.title}' успешно создана`,
+              'ОК',
+              {
+                duration: 3000,
+              }
+            );
+
             return of(TasksActions.createTaskSuccess({ task: response.data! }));
           }),
           catchError((error) =>
@@ -51,6 +61,10 @@ export class TasksEffects {
       mergeMap((action) =>
         this._tasksService.deleteTaskById(action.taskId).pipe(
           map((response: IResponse<boolean>) => {
+            this._snackBar.open(`Задача успешно удалена`, 'ОК', {
+              duration: 3000,
+            });
+
             return TasksActions.deleteTaskSuccess({ taskId: action.taskId });
           }),
           catchError((error) =>
