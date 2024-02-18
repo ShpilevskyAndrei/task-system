@@ -6,9 +6,6 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { Observable, of } from 'rxjs';
 
 import { ProgressBarStateService } from './core/services/progress-bar-state.service';
-import {StoreModule} from "@ngrx/store";
-import {userReducers} from "./state/user/reducers";
-import {reducers} from "./state";
 
 @Component({
   selector: 'app-root',
