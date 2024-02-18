@@ -59,5 +59,9 @@
     </tr>
   </table>
 
-  <mat-paginator pageSize="8" aria-label="Select page of users"></mat-paginator>
+  <mat-paginator
+    [ngStyle]="{'display': tasks.length ? 'block' : 'none'}"
+    [pageSize]="pageSize"
+    aria-label="Select page of users"
+  ></mat-paginator>
 </section>

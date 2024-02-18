@@ -22,6 +22,6 @@ export class AppComponent implements OnInit {
   public ngOnInit(): void {
     asapScheduler.schedule((): void => {
       this.loaderState$ = this.progressBarStateService.getSpinnerState();
-    }, 100);
+    }, 150);
   }
 }

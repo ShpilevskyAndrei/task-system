@@ -11,6 +11,13 @@
     &__content {
       min-height: 100%;
       width: calc(100vw - 300px);
+      position: relative;
+      :first-child {
+        position: sticky;
+        top: 0;
+        right: 0;
+        width: 100%;
+      }
       &_container {
         padding: 20px 30px 30px;
         box-sizing: border-box;

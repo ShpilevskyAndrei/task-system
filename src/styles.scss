@@ -104,6 +104,8 @@ p {
   background-color: transparent !important;
 }
 
-.mat-mdc-paginator-container {
+.mat-mdc-paginator-container, .mat-mdc-paginator, .mat-mdc-paginator-outer-container, .mat-mdc-paginator-container {
   height: 64px;
+  border-radius: 10px!important;
+  padding: 0 20px;
 }

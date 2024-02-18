@@ -1,8 +1,11 @@
 :host {
   .tasks-page {
     box-shadow: 0 10px 30px 0 #0000000f;
+    border-radius: 10px!important;
     &__table {
-      padding: 20px 30px 6px;
+      padding: 20px 30px 0;
+      border-radius: 10px;
+
       ::ng-deep thead {
         tr {
           height: 42px;

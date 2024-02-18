@@ -22,11 +22,11 @@ import {
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 
-import { Observable } from 'rxjs';
+import { fromEvent, map, Observable, startWith } from 'rxjs';
 
 import { ITask } from './interfaces/task.interface';
 import { TasksService } from '../../../../core/services/requests/tasks.service';
-import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
+import {AsyncPipe, DatePipe, NgIf, NgStyle} from '@angular/common';
 import { DateFormatPipe } from '../../../../shared/pipes/date-format.pipe';
 import { IUserWithoutPass } from '../../../../core/interfaces/user.interface';
 import { UsersStateService } from '../../../../state/users-state.service';
@@ -60,6 +60,7 @@ import { taskTableColumns } from './consts/task-table-columns';
     DateFormatPipe,
     AsyncPipe,
     NgIf,
+    NgStyle,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
@@ -70,18 +71,21 @@ export class TasksComponent
 {
   @ViewChild(MatPaginator) public paginator: MatPaginator | null = null;
 
-  public columns: string[] = taskTableColumns;
-  public dataSource!: MatTableDataSource<ITask>;
-  public tasks: ITask[] = [];
-
+  private windowHeight: number = window.innerHeight;
   private readonly _taskService = inject(TasksService);
   private readonly _taskStateService = inject(TasksStateService);
   private readonly _usersStateService = inject(UsersStateService);
   private readonly _snackBar = inject(MatSnackBar);
   private readonly _dialog = inject(MatDialog);
 
+  public columns: string[] = taskTableColumns;
+  public dataSource!: MatTableDataSource<ITask>;
+  public tasks: ITask[] = [];
+  public pageSize: number = this.calculatePageSize();
+
   public ngOnInit(): void {
     this.getTasks();
+    this.trackPageSize();
   }
 
   public ngAfterViewInit(): void {
@@ -165,12 +169,32 @@ export class TasksComponent
   }
 
   public openTaskInfo(task: ITask): void {
-    const dialogRef = this._dialog.open(TaskModalComponent, {
+    this._dialog.open(TaskModalComponent, {
       data: { task: task, type: 'show' },
     });
+  }
 
-    dialogRef.afterClosed().subscribe((result): void => {
-      console.log(`Dialog result: ${result}`);
-    });
+  private trackPageSize(): void {
+    this.subscribeTo = fromEvent(window, 'resize')
+      .pipe(
+        startWith(0),
+        map(() => window.innerHeight)
+      )
+      .subscribe((windowHeight: number): void => {
+        this.windowHeight = windowHeight;
+        this.updatePageSize();
+      });
+  }
+
+  private updatePageSize(): void {
+    if (this.paginator) {
+      const pageSize: number = this.calculatePageSize();
+      this.paginator.pageSize = pageSize;
+      this.paginator._changePageSize(pageSize);
+    }
+  }
+
+  private calculatePageSize(): number {
+    return Math.floor((this.windowHeight - 320) / 74);
   }
 }
