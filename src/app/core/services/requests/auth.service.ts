@@ -66,7 +66,6 @@ export class AuthService {
 
           this._accessTokenStorageService.removeItem();
           this._refreshTokenStorageService.removeItem();
-          //TODO
           this.setIsAuthorized(false);
 
           return response;
